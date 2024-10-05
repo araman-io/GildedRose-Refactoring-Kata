@@ -2,8 +2,7 @@ package com.gildedrose;
 
 import org.junit.jupiter.api.Test;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.*;
 
 class GildedRoseTest {
 
@@ -66,9 +65,18 @@ class GildedRoseTest {
     }
 
     @Test
-    public void item_can_never_have_quality_more_than_50() {
+    void item_can_have_quality_of_50() {
+        assertDoesNotThrow(() -> {
+            Item anItem = new Item("foo", 6, 50);
+            GildedRose app = new GildedRose(new Item[]{anItem});
+        });
+    }
+
+    @Test
+    void item_cant_have_quality_more_than_50() {
         assertThrows(RuntimeException.class, () -> {
-            new Item("foo", 6, 51);
+            Item i = new Item("foo", 6, 51);
+            GildedRose app = new GildedRose(new Item[]{i});
         });
     }
 
