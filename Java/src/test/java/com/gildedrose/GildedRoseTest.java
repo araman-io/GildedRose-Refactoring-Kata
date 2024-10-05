@@ -65,7 +65,7 @@ class GildedRoseTest {
     }
 
     @Test
-    void item_can_have_quality_of_50() {
+    void item_can_have_quality_upto_50_only() {
         assertDoesNotThrow(() -> {
             Item anItem = new Item("foo", 6, 50);
             GildedRose app = new GildedRose(new Item[]{anItem});
