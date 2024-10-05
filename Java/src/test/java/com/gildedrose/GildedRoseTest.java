@@ -23,5 +23,14 @@ class GildedRoseTest {
         assertEquals(4, app.items[0].sellIn, "sell in should have lowered by 1");
         assertEquals(9, app.items[0].quality, "quality should have lowered by 1");
     }
-    
+
+    @Test
+    void quality_degardes_twice_as_fast_after_sellIn() {
+        Item item = new Item("foo", 0, 7);
+        GildedRose app = new GildedRose(new Item[]{item});
+        app.updateQuality();
+        assertEquals(-1, app.items[0].sellIn, "sell in should have lowered by 1");
+        assertEquals(5, app.items[0].quality, "quality should have lowered by 1");
+    }
+
 }
