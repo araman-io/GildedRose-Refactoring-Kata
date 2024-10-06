@@ -82,12 +82,49 @@ class GildedRoseTest {
 
     @Test
     void sulfuras_quality_never_changes() {
-        Item item = new Item("Sulfuras", 5, 37);
+        Item item = new Item("Sulfuras, Hand of Ragnaros", 5, 37);
         GildedRose app = new GildedRose(new Item[]{item});
         app.updateQuality();
         app.updateQuality();
         app.updateQuality();
         assertEquals(37, app.items[0].quality, "Sulfuras quality should have never changed");
+        assertEquals(5, app.items[0].sellIn, "Sulfuras sellIn should have never changed");
+    }
+
+    @Test
+    void passes_increases_by_2_in_quality_with_10days_or_less() {
+        Item item = new Item("Backstage passes to a TAFKAL80ETC concert", 9, 37);
+        GildedRose app = new GildedRose(new Item[]{item});
+        app.updateQuality();
+        assertEquals(39, app.items[0].quality, "quality should have increased by 2");
+    }
+
+    @Test
+    void passes_increases_by_3_in_quality_with_5days_or_less() {
+        Item item = new Item("Backstage passes to a TAFKAL80ETC concert", 4, 37);
+        GildedRose app = new GildedRose(new Item[]{item});
+        app.updateQuality();
+        assertEquals(40, app.items[0].quality, "quality should have increased by 3");
+    }
+
+    @Test
+    void passes_quality_is_0_after_sellin() {
+        Item item = new Item("Backstage passes to a TAFKAL80ETC concert", 0, 37);
+        GildedRose app = new GildedRose(new Item[]{item});
+        app.updateQuality();
+        assertEquals(0, app.items[0].quality, "quality should have been 0");
+    }
+
+    void passes_quality_never_exceeds_50() {
+        Item item = new Item("Backstage passes to a TAFKAL80ETC concert", 4, 47);
+        GildedRose app = new GildedRose(new Item[]{item});
+        app.updateQuality();
+        assertEquals(3, app.items[0].sellIn);
+        assertEquals(50, app.items[0].quality);
+
+        app.updateQuality();
+        assertEquals(2, app.items[0].sellIn);
+        assertEquals(50, app.items[0].quality);
     }
 
 }
