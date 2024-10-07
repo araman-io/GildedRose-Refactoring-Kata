@@ -87,8 +87,16 @@ class GildedRoseTest {
         app.updateQuality();
         app.updateQuality();
         app.updateQuality();
-        assertEquals(37, app.items[0].quality, "Sulfuras quality should have never changed");
+        assertEquals(80, app.items[0].quality, "Sulfuras quality should always be 80");
         assertEquals(5, app.items[0].sellIn, "Sulfuras sellIn should have never changed");
+    }
+
+    @Test
+    void leave_passes_quality_untouched_if_more_than_10days() {
+        Item item = new Item("Backstage passes to a TAFKAL80ETC concert", 12, 37);
+        GildedRose app = new GildedRose(new Item[]{item});
+        app.updateQuality();
+        assertEquals(37, app.items[0].quality, "quality shouldnt have changed as more than 10 sellIn days");
     }
 
     @Test
@@ -115,6 +123,7 @@ class GildedRoseTest {
         assertEquals(0, app.items[0].quality, "quality should have been 0");
     }
 
+    @Test
     void passes_quality_never_exceeds_50() {
         Item item = new Item("Backstage passes to a TAFKAL80ETC concert", 4, 47);
         GildedRose app = new GildedRose(new Item[]{item});
@@ -126,5 +135,24 @@ class GildedRoseTest {
         assertEquals(2, app.items[0].sellIn);
         assertEquals(50, app.items[0].quality);
     }
+
+    @Test
+    void conjured_quality_decreases_twice_as_fast() {
+        Item item = new Item("CONJURED BRIE", 4, 47);
+        GildedRose app = new GildedRose(new Item[]{item});
+        app.updateQuality();
+        assertEquals(3, app.items[0].sellIn);
+        assertEquals(45, app.items[0].quality);
+    }
+
+    @Test
+    void conjured_quality_decreases_twice_as_fast_past_sellIn() {
+        Item item = new Item("CONJURED BRIE", 1, 47);
+        GildedRose app = new GildedRose(new Item[]{item});
+        app.updateQuality();
+        assertEquals(0, app.items[0].sellIn);
+        assertEquals(43, app.items[0].quality);
+    }
+
 
 }
