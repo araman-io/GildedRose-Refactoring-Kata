@@ -12,9 +12,7 @@ public class StrategyFactory {
 
     Strategy fetchStrategyFor(Item item) {
         return stream(strategies)
-            .filter(s -> {
-                return s.applies(item);
-            })
+            .filter(s -> s.applies(item))
             .findFirst()
             .orElse(defaultStrategy);
     }
